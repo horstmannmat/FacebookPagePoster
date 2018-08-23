@@ -1,6 +1,6 @@
 # Spotted Poster
 Since Facebook blocked the apps to post on page, read more [here](https://developers.facebook.com/docs/pages/).
-I found a workaround, post on twitter and make twitter post on facebook.
+I need to use Selenium
 
 ### Prerequisites
 
