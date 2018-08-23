@@ -72,11 +72,11 @@ with open("spottedNew.tsv","w") as f:
 #Create blacklist file if not exists
 
 #Write new spotteds on a diff file and warn user if have blacklisted words
-        with open('spottedOld.tsv', 'r') as fold, \
-                open('spottedNew.tsv', 'r') as fnew,\
-                open('spottedDiff.tsv', 'w') as fdiff:
-            diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
-            lines = list(diff)[2:]
-            added = [line[1:] for line in lines if line[0] == '+']
-            for line in added:
-                fdiff.write(line)
+with open('spottedOld.tsv', 'r') as fold, \
+    open('spottedNew.tsv', 'r') as fnew,\
+    open('spottedDiff.tsv', 'w') as fdiff:
+    diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
+    lines = list(diff)[2:]
+    added = [line[1:] for line in lines if line[0] == '+']
+    for line in added:
+            fdiff.write(line)

@@ -9,7 +9,6 @@ sudo apt update
 sudo apt install python
 sudo apt install python-pip
 pip install --user requests
-pip install --user colorama
 pip install --user selenium
 pip install --user logging
 pip install --user difflib
@@ -36,7 +35,7 @@ pip install --user --upgrade google-api-python-client
   ```
 
 2) Select the spreadsheet to download:
-  - Write the spreadsheet id on the file sensitive_spreadSheet_data.txt 
+  - Write the spreadsheet id on the file sensitive_spreadSheet_data.txt
     ```
     <Spreadsheet id>
     ```
