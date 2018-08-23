@@ -1,0 +1,9 @@
+*.json
+*crendentials*
+*.jar
+*sesitive*
+.DS_store
+facebook_credentials.txt
+sensitive_spreadSheet_data.txt
+geckodriver.log
+*.tsv
