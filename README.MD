@@ -10,8 +10,7 @@ sudo apt install python
 sudo apt install python-pip
 pip install --user requests
 pip install --user selenium
-pip install --user logging
-pip install --user difflib
+pip install --user oauth2client
 pip install --user --upgrade google-api-python-client
 ```
 

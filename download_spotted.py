@@ -29,10 +29,7 @@ from apiclient.http import MediaIoBaseDownload
 from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
-from colorama import Fore, init
 
-#Autoreset color to warn user:
-init(autoreset=True)
 
 f = open('sensitive_spreadSheet_data.txt', 'r')
 file_id= f.readline().rstrip()
