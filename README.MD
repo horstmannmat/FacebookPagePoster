@@ -33,7 +33,7 @@ pip install --user --upgrade google-api-python-client
   <Password>
   ```
 
-2) Select the spreadsheet to download:
+2) Select the spreadsheet to download (see about the spreadsheet id [here](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) :
   - Write the spreadsheet id on the file sensitive_spreadSheet_data.txt
     ```
     <Spreadsheet id>
