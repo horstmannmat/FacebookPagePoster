@@ -47,6 +47,7 @@ class Spotted_Poster(object):
         self.password = None
         self.login = False
         self.drive_service = None
+        self.page_url = None
 
 
     def facebook_post(self, spotted_message):
@@ -164,7 +165,9 @@ class Spotted_Poster(object):
 
     def sign_in(self):
         def go_to_page():
-            self.driver.get('https://www.facebook.com/SpottedUFPR3.0/')
+
+            # self.driver.get('https://www.facebook.com/SpottedUFPR3.0/')
+            self.driver.get(self.page_url)
 
         def login_attempt():
             self.getting_login_details()
@@ -248,6 +251,9 @@ class Spotted_Poster(object):
             time.sleep(10)
 
     def main(self):
+
+        self.page_url = 'https://www.facebook.com/SpottedUFPR3.0/'
+
         self.setup_google_api()
         self.download_spreedsheet()
         self.firing_up_driver()
