@@ -54,7 +54,9 @@ class Spotted_Poster(object):
 
         def open_text_area():
             self.driver.execute_script("window.scrollTo(0, 0);")
-            text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "PageComposerPagelet_")))
+            self.driver.execute_script("window.scrollTo(0, 100);")
+            text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "xc_message")))
+            # text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "PageComposerPagelet_")))
             text_area.click()
             return self.driver.switch_to.active_element
 
@@ -71,15 +73,17 @@ class Spotted_Poster(object):
             logging.info(spotted_message)
 
             text_box.send_keys(spotted_message)
-            time.sleep(4)
+            post_button = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "view_post")))
+            post_button.click()
+            # time.sleep(4)
 
-            if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
-            # linux or windows
-                text_box.send_keys(Keys.CONTROL,Keys.RETURN)
-
-            elif platform == "darwin":
-            # OS X
-                text_box.send_keys(Keys.COMMAND,Keys.RETURN)
+            # if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
+            # # linux or windows
+            #     text_box.send_keys(Keys.CONTROL,Keys.RETURN)
+            #
+            # elif platform == "darwin":
+            # # OS X
+            #     text_box.send_keys(Keys.COMMAND,Keys.RETURN)
 
         post_message(spotted_message)
 
@@ -243,7 +247,7 @@ class Spotted_Poster(object):
 
             for spotted in spotteds:
                 message = ' '.join([spotted.split("\t")[1],spotted.split("\t")[2],spotted.split("\t")[3]])
-                time.sleep(4)
+                time.sleep(1)
                 self.facebook_post(message)
 
                 fOld.write(spotted)
@@ -252,7 +256,8 @@ class Spotted_Poster(object):
 
     def main(self):
 
-        self.page_url = 'https://www.facebook.com/SpottedUFPR3.0/'
+        # self.page_url = 'https://www.facebook.com/SpottedUFPR3.0/'
+        self.page_url = 'https://m.facebook.com/SpottedUFPR3.0/'
 
         self.setup_google_api()
         self.download_spreedsheet()
