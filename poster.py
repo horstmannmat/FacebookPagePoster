@@ -164,7 +164,7 @@ class Spotted_Poster(object):
 
 
     def close(self):
-        self.driver.close()
+        self.driver.quit()
 
 
     def sign_in(self):
