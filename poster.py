@@ -170,16 +170,16 @@ class Spotted_Poster(object):
 
     def close(self):
         logging.info("Closing Firefox")
-
-        if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
-        # linux or windows
-            self.driver.quit()
-        elif platform == "darwin":
-        # # OS X
-            try:
-                ActionChains(self.driver).send_keys(Keys.COMMAND, "q").perform()
-            except:
-                pass
+        self.driver.quit()
+        # if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
+        # # linux or windows
+        #     self.driver.quit()
+        # elif platform == "darwin":
+        # # # OS X
+        #     try:
+        #         ActionChains(self.driver).send_keys(Keys.COMMAND, "q").perform()
+        #     except:
+        #         pass
 
 
 
