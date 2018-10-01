@@ -30,6 +30,7 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
@@ -122,8 +123,12 @@ class Spotted_Poster(object):
                 profile.set_preference("permissions.default.desktop-notification", 1);
                 profile.set_preference("network.http.use-cache", False)
                 profile.set_preference("keep_alive",False)
+                options = webdriver.FirefoxOptions()
+                options.add_argument('-headless')
                 logging.info("Initializing Firefox")
-                self.driver = webdriver.Firefox(profile)
+
+
+                self.driver = webdriver.Firefox(profile, firefox_options=options)
 
                 # logging.info("Initializing Chrome")
                 # chrome_options = webdriver.ChromeOptions()
@@ -164,7 +169,20 @@ class Spotted_Poster(object):
 
 
     def close(self):
-        self.driver.quit()
+        logging.info("Closing Firefox")
+
+        if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
+        # linux or windows
+            self.driver.quit()
+        elif platform == "darwin":
+        # # OS X
+            try:
+                ActionChains(self.driver).send_keys(Keys.COMMAND, "q").perform()
+            except:
+                pass
+
+
+
 
 
     def sign_in(self):
