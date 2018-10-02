@@ -24,7 +24,6 @@ the user has access to.
 from __future__ import print_function
 import os
 import io
-import difflib
 from apiclient.http import MediaIoBaseDownload
 from apiclient.discovery import build
 from httplib2 import Http
@@ -61,19 +60,9 @@ while done is False:
 print("Finished download")
 
 #write the new file
-with open("spottedNew.tsv","w") as f:
+with open("spottedOld.tsv","w") as f:
     wrapper = str(fh.getvalue().decode("utf-8"))
-    f.write(wrapper + '\n')
-
-
-#Create blacklist file if not exists
-
-#Write new spotteds on a diff file and warn user if have blacklisted words
-with open('spottedOld.tsv', 'r') as fold, \
-    open('spottedNew.tsv', 'r') as fnew,\
-    open('spottedDiff.tsv', 'w') as fdiff:
-    diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
-    lines = list(diff)[2:]
-    added = [line[1:] for line in lines if line[0] == '+']
-    for line in added:
-            fdiff.write(line)
+    lines = io.StringIO(wrapper).readlines()
+    for line in lines:
+        if (line.split("\t")[1] !=  '' ):
+            f.write(line)
