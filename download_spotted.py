@@ -60,9 +60,9 @@ while done is False:
 print("Finished download")
 
 #write the new file
-with open("spottedOld.tsv","w") as f:
+with open("spottedOld.tsv","wb") as f:
     wrapper = str(fh.getvalue().decode("utf-8"))
     lines = io.StringIO(wrapper).readlines()
     for line in lines:
         if (line.split("\t")[1] !=  '' ):
-            f.write(line)
+            f.write(line.encode('utf-8',errors='strict'))

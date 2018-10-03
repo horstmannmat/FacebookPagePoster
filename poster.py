@@ -128,7 +128,7 @@ class Spotted_Poster(object):
                 logging.info("Initializing Firefox")
 
 
-                self.driver = webdriver.Firefox(profile, firefox_options=options)
+                self.driver = webdriver.Firefox(profile,options=options)
 
                 # logging.info("Initializing Chrome")
                 # chrome_options = webdriver.ChromeOptions()
@@ -239,27 +239,27 @@ class Spotted_Poster(object):
             status, done = downloader.next_chunk()
         logging.info("Download finished")
         #write the new file
-        with open("spottedNew.tsv","w") as f:
+        with open("spottedNew.tsv","wb") as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
-            f.write(wrapper + '\n')
+            f.write(wrapper.encode('utf-8',errors='strict'))
 
         self.seek_differences()
 
 
     def seek_differences(self):
-        with open('spottedOld.tsv', 'r') as fold, \
-                open('spottedNew.tsv', 'r') as fnew,\
-                open('spottedDiff.tsv', 'w') as fdiff:
+        with open('spottedOld.tsv', 'r', encoding='utf-8') as fold, \
+                open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
+                open('spottedDiff.tsv', 'wb') as fdiff:
             diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
             lines = list(diff)[2:]
             added = [line[1:] for line in lines if line[0] == '+']
             for line in added:
-                fdiff.write(line)
+                fdiff.write(line.encode('utf-8',errors='strict'))
             logging.info("Created the diff file...")
 
 
     def post_spotteds(self):
-        with open("spottedDiff.tsv","r") as fDiff, open("spottedOld.tsv","a") as fOld:
+        with open("spottedDiff.tsv","r", encoding='utf-8') as fDiff, open("spottedOld.tsv","ab") as fOld:
             spotteds = fDiff.readlines()
 
 
@@ -268,7 +268,7 @@ class Spotted_Poster(object):
                 time.sleep(1)
                 self.facebook_post(message)
 
-                fOld.write(spotted)
+                fOld.write(spotted.encode('utf-8',errors='strict'))
 
             time.sleep(10)
 

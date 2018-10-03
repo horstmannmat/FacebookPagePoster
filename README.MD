@@ -1,9 +1,8 @@
 # Spotted Poster
 Since Facebook blocked the apps to post on page, read more [here](https://developers.facebook.com/docs/pages/).
 I need to use Selenium
-
+## Linux
 ### Prerequisites
-
 ```
 sudo apt update
 sudo apt install python
@@ -13,9 +12,30 @@ pip install --user selenium
 pip install --user oauth2client
 pip install --user --upgrade google-api-python-client
 ```
+* Gecko Driver for Firefox
+Download the selenium Driver for firefox [here](https://github.com/mozilla/geckodriver/releases).
 
-### Running
-0) Create a google drive API project:
+## Windows
+### Prerequisites
+ * Install [Firefox](https://www.mozilla.org/pt-BR/firefox/new/)
+ * Install [Gecko Driver]([here](https://github.com/mozilla/geckodriver/releases) for Windows
+ * Extract geckodriver.zip and move the geckodriver.exe to `C:\\Program Files (x86)\\Gecko Driver` (probably you will need to create this folder)
+ * Install [python 3.7](https://www.python.org/downloads/)
+        ```
+        <b>Note</b>: You must ensure that you select <b>Add Python 3.7 to PATH</b> and then select <b>Install Now</b>.
+        ```
+ * Download [get-pip.py](https://bootstrap.pypa.io/get-pip.py), Since you have already installed Python, Windows will now understand that this is a Python script (.py) and will allow you to run it. Just double-click the file and let it run. A command prompt-like window will open and do its thing before closing again.
+ * Open de Command Prompt and run:
+     ```
+     pip install --user requests
+     pip install --user selenium
+     pip install --user oauth2client
+     pip install --user --upgrade google-api-python-client
+     ```
+
+## Configuring
+### Google API
+####Create a google drive API project:
   - Use this [wizard](https://console.developers.google.com/flows/enableapi?apiid=drive) to create or select a project in the Google Developers Console and automatically turn on the API.
   - Click Continue, then Go to credentials.
   - On the Add credentials to your project page, click the Cancel button.
@@ -26,26 +46,28 @@ pip install --user --upgrade google-api-python-client
   - Click the file_download (Download JSON) button to the right of the client ID.
   - Move this file to your working directory.
 
-1) Set the facebook credentials:
+### Facebook Credentials
+#### Set the facebook credentials:
   - Write on the file facebook_credentials.txt the email and passwort to log in (see the example file)
   ```
   <Email>
   <Password>
   ```
 
-2) Select the spreadsheet to download (see about the spreadsheet id [here](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) :
+### Google Spreadsheet
+#### Select the spreadsheet to download (see about the spreadsheet id [here](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) :
   - Write the spreadsheet id on the file sensitive_spreadSheet_data.txt
     ```
     <Spreadsheet id>
     ```
-
-3) Download the spreadsheet file using
+### Download Spreadsheet
+#### Download the spreadsheet file using
 ```
 python download_spotted.py --noauth_local_webserver
 ```
-4) Download the selenium driver [here](https://github.com/mozilla/geckodriver/releases). (we are using the Firefox driver)
 
-5) Run the poster:
+## Usage
+
 ```
 python poster.py
 ```
