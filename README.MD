@@ -48,14 +48,14 @@ Download the selenium Driver for firefox [here](https://github.com/mozilla/gecko
 
 ### Facebook Credentials
 #### Set the facebook credentials:
-  - Write on the file facebook_credentials.txt the email and passwort to log in (see the example file)
+  - Write on the file facebook_credentials.txt the email and password to log in (see the example file)
   ```
   <Email>
   <Password>
   ```
 
 ### Google Spreadsheet
-#### Select the spreadsheet to download (see about the spreadsheet id [here](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id) :
+#### Select the spreadsheet to download (see about the spreadsheet id [here](https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id)) :
   - Write the spreadsheet id on the file sensitive_spreadSheet_data.txt
     ```
     <Spreadsheet id>
