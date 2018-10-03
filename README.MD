@@ -18,7 +18,7 @@ Download the selenium Driver for firefox [here](https://github.com/mozilla/gecko
 ## Windows
 ### Prerequisites
  * Install [Firefox](https://www.mozilla.org/pt-BR/firefox/new/)
- * Install [Gecko Driver]([here](https://github.com/mozilla/geckodriver/releases) for Windows
+ * Install [Gecko Driver](https://github.com/mozilla/geckodriver/releases) for Windows
  * Extract geckodriver.zip and move the geckodriver.exe to `C:\Program Files (x86)\Gecko Driver` (probably you will need to create this folder)
  * Install [python 3.7](https://www.python.org/downloads/)
 
