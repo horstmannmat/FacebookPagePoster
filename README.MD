@@ -21,8 +21,9 @@ Download the selenium Driver for firefox [here](https://github.com/mozilla/gecko
  * Install [Gecko Driver]([here](https://github.com/mozilla/geckodriver/releases) for Windows
  * Extract geckodriver.zip and move the geckodriver.exe to `C:\\Program Files (x86)\\Gecko Driver` (probably you will need to create this folder)
  * Install [python 3.7](https://www.python.org/downloads/)
+
         ```
-        <b>Note</b>: You must ensure that you select <b>Add Python 3.7 to PATH</b> and then select <b>Install Now</b>.
+        <pre> <b>Note</b>: You must ensure that you select <b>Add Python 3.7 to PATH</b> and then select <b>Install Now</b>.</pre>
         ```
  * Download [get-pip.py](https://bootstrap.pypa.io/get-pip.py), Since you have already installed Python, Windows will now understand that this is a Python script (.py) and will allow you to run it. Just double-click the file and let it run. A command prompt-like window will open and do its thing before closing again.
  * Open de Command Prompt and run:
