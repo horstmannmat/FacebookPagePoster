@@ -71,6 +71,10 @@ python download_spotted.py --noauth_local_webserver
 ```
 python poster.py
 ```
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
 
 
 * **Matheus Horstmann** - *Initial work* - [horstmannmat](https://github.com/horstmannmat)
