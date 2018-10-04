@@ -169,7 +169,7 @@ class Spotted_Poster(object):
 
         send_email()
         send_password()
-
+        self.driver.get('https://www.facebook.com/')
 
     def close(self):
         logging.info("Closing Firefox")
@@ -190,7 +190,6 @@ class Spotted_Poster(object):
 
     def sign_in(self):
         def go_to_page():
-
             # self.driver.get('https://www.facebook.com/SpottedUFPR3.0/')
             self.driver.get(self.page_url)
 
@@ -203,7 +202,6 @@ class Spotted_Poster(object):
             login_attempt()
             try:
                 self.get_if_loggin_successful()
-                self.driver.get('https://www.facebook.com/')
             except:
                 # self.driver.close()
 
