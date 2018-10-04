@@ -124,7 +124,7 @@ class Spotted_Poster(object):
                 profile.set_preference("network.http.use-cache", False)
                 profile.set_preference("keep_alive",False)
                 options = webdriver.FirefoxOptions()
-                options.add_argument('-headless')
+                # options.add_argument('-headless')
                 logging.info("Initializing Firefox")
 
 
