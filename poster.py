@@ -200,7 +200,7 @@ class Spotted_Poster(object):
         while self.login is False:
             login_attempt()
             time.sleep(5)
-            self.driver.get('https://www.facebook.com/')
+            self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
 
             try:
                 self.get_if_loggin_successful()
