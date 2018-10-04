@@ -141,8 +141,11 @@ class Spotted_Poster(object):
                 # self.driver = webdriver.Safari()
 
                 # self.driver.implicitly_wait(3)
-            except:
+            except Exception as error:
                 logging.error("Can't initialize Firefox")
+                logging.error(type(error))    # the exception instance
+                logging.error(error.args)     # arguments stored in .args
+                logging.error(error)
             else:
                 logging.info("Setup successful")
 
