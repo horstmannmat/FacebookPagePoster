@@ -203,9 +203,10 @@ class Spotted_Poster(object):
             login_attempt()
             try:
                 self.get_if_loggin_successful()
-
+                self.driver.get('https://www.facebook.com/')
             except:
                 # self.driver.close()
+
                 logging.error("Wrong email or password?")
                 global EMAIL
                 global PASSWORD
