@@ -199,6 +199,7 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
+            time.sleep(5)
             self.driver.get('https://www.facebook.com/')
 
             try:
