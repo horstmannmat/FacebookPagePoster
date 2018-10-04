@@ -169,7 +169,6 @@ class Spotted_Poster(object):
 
         send_email()
         send_password()
-        self.driver.get('https://www.facebook.com/')
 
     def close(self):
         logging.info("Closing Firefox")
@@ -200,6 +199,8 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
+            self.driver.get('https://www.facebook.com/')
+
             try:
                 self.get_if_loggin_successful()
             except:
