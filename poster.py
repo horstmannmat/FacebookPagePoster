@@ -26,6 +26,7 @@ import json
 import time
 import os
 from sys import platform
+import signal
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -172,20 +173,14 @@ class Spotted_Poster(object):
 
     def close(self):
         logging.info("Closing Firefox")
-        self.driver.quit()
-        # if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
-        # # linux or windows
-        #     self.driver.quit()
-        # elif platform == "darwin":
-        # # # OS X
-        #     try:
-        #         ActionChains(self.driver).send_keys(Keys.COMMAND, "q").perform()
-        #     except:
-        #         pass
-
-
-
-
+        
+        if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
+        # linux or windows
+            self.driver.quit()
+        elif platform == "darwin":
+        #  OS X
+            os.killpg(os.getpgid(self.driver.service.process.pid), signal.SIGTERM)
+            self.driver.quit()
 
     def sign_in(self):
         def go_to_page():
@@ -199,8 +194,8 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
-            time.sleep(5)
-            self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
+            # time.sleep(5)
+            # self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
 
             try:
                 self.get_if_loggin_successful()
