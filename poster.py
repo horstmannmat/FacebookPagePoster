@@ -173,14 +173,8 @@ class Spotted_Poster(object):
 
     def close(self):
         logging.info("Closing Firefox")
-        
-        if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
-        # linux or windows
-            self.driver.quit()
-        elif platform == "darwin":
-        #  OS X
-            os.killpg(os.getpgid(self.driver.service.process.pid), signal.SIGTERM)
-            self.driver.quit()
+
+        self.driver.quit()
 
     def sign_in(self):
         def go_to_page():
@@ -241,7 +235,7 @@ class Spotted_Poster(object):
         with open("spottedNew.tsv","wb") as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
             f.write(wrapper.encode('utf-8',errors='strict'))
-
+            f.write('\n'.encode('utf-8',errors='strict'))
         self.seek_differences()
 
 
@@ -250,10 +244,12 @@ class Spotted_Poster(object):
                 open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
                 open('spottedDiff.tsv', 'wb') as fdiff:
             diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
+            # logging.info(''.join(diff), end="")
             lines = list(diff)[2:]
             added = [line[1:] for line in lines if line[0] == '+']
             for line in added:
                 fdiff.write(line.encode('utf-8',errors='strict'))
+
             logging.info("Created the diff file...")
 
 
@@ -269,6 +265,8 @@ class Spotted_Poster(object):
 
                 fOld.write(spotted.encode('utf-8',errors='strict'))
 
+            fOld.write('\n'.encode('utf-8',errors='strict'))
+
             time.sleep(10)
 
     def main(self):
@@ -283,6 +281,8 @@ class Spotted_Poster(object):
         self.post_spotteds()
 
         self.close()
+
+        logging.info("All poster were published ")
 
 
 def main():
