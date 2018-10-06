@@ -150,11 +150,11 @@ class Spotted_Poster(object):
             else:
                 logging.info("Setup successful")
 
-        def driver_open_url():
-            self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
-
         initialize_driver()
-        driver_open_url()
+        self.driver_open_url()
+
+    def driver_open_url(self):
+        self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
 
     def sending_login_details(self):
         def send_email():
@@ -188,8 +188,8 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
-            # time.sleep(5)
-            # self.driver.get('https://www.facebook.com/login.php?login_attempt=1&lwv=110')
+            time.sleep(5)
+            self.driver_open_url()
 
             try:
                 self.get_if_loggin_successful()
@@ -244,7 +244,6 @@ class Spotted_Poster(object):
                 open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
                 open('spottedDiff.tsv', 'wb') as fdiff:
             diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
-            # logging.info(''.join(diff), end="")
             lines = list(diff)[2:]
             added = [line[1:] for line in lines if line[0] == '+']
             for line in added:
