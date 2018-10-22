@@ -68,3 +68,7 @@ with open("spottedOld.tsv","wb") as f:
             f.write(line.encode('utf-8',errors='strict'))
 
     f.write('\n'.encode('utf-8',errors='strict'))
+
+
+open("spottedDiff.tsv", "w").close()
+open("spottedNew.tsv", "w").close()
