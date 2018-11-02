@@ -12,12 +12,12 @@ pip install --user selenium
 pip install --user oauth2client
 pip install --user --upgrade google-api-python-client
 ```
-* Gecko Driver for Firefox
-Download the selenium Driver for firefox [here](https://github.com/mozilla/geckodriver/releases).
+* Opera Driver for Firefox
+Download the selenium Driver for opera [here](https://github.com/operasoftware/operachromiumdriver/releases).
 
 ## Windows
 ### Prerequisites
- * Install [Firefox](https://www.mozilla.org/pt-BR/firefox/new/)
+ * Install [Opera](https://www.opera.com/download)
  * Install [Opera Driver](https://github.com/operasoftware/operachromiumdriver/releases) for Windows
  * Extract operadriver.zip and move the operadriver.exe to `C:\Program Files (x86)\Opera Drive\operadriver.exe` (probably you will need to create this folder)
  * Install [python 3.7](https://www.python.org/downloads/)
