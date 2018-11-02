@@ -130,7 +130,7 @@ class Spotted_Poster(object):
             #     self.driver = webdriver.Firefox(profile,options=options)
                 logging.info("Initializing Opera")
 
-                webdriver_service = service.Service('"C:\Program Files (x86)\Opera Drive\operadriver.exe"')
+                webdriver_service = service.Service("C:\Program Files (x86)\Opera Drive\operadriver.exe")
                 webdriver_service.start()
 
                 capabilities = { 'operaOptions': { 'debuggerAddress': "localhost:1212" }}
