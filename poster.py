@@ -35,6 +35,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome import service
 
 
 logging.basicConfig(level=logging.INFO,
@@ -114,24 +115,36 @@ class Spotted_Poster(object):
     def firing_up_driver(self):
         def initialize_driver():
             try:  # Linux
-                profile = webdriver.FirefoxProfile()
-                profile.set_preference("browser.cache.disk.enable", False)
-                profile.set_preference("browser.cache.memory.enable", False)
-                profile.set_preference("browser.cache.offline.enable", False)
-                profile.set_preference("permissions.default.desktop-notification", 1);
-                profile.set_preference("network.http.use-cache", False)
-                profile.set_preference("keep_alive",False)
-                options = webdriver.FirefoxOptions()
-                options.add_argument('-headless')
-                logging.info("Initializing Firefox")
+            #     profile = webdriver.FirefoxProfile()
+            #     profile.set_preference("browser.cache.disk.enable", False)
+            #     profile.set_preference("browser.cache.memory.enable", False)
+            #     profile.set_preference("browser.cache.offline.enable", False)
+            #     profile.set_preference("permissions.default.desktop-notification", 1);
+            #     profile.set_preference("network.http.use-cache", False)
+            #     profile.set_preference("keep_alive",False)
+            #     options = webdriver.FirefoxOptions()
+            #     options.add_argument('-headless')
+            #     logging.info("Initializing Firefox")
+            #
+            #
+            #     self.driver = webdriver.Firefox(profile,options=options)
+                logging.info("Initializing Opera")
 
+                webdriver_service = service.Service('"C:\Program Files (x86)\Opera Drive\operadriver.exe"')
+                webdriver_service.start()
 
-                self.driver = webdriver.Firefox(profile,options=options)
+                capabilities = { 'operaOptions': { 'debuggerAddress': "localhost:1212" }}
+                opera_options = webdriver.ChromeOptions()
 
-                # logging.info("Initializing Chrome")
-                # chrome_options = webdriver.ChromeOptions()
-                #
-                # chrome_options.add_argument("--disable-notifications")
+                self.driver = webdriver.Remote(webdriver_service.service_url, capabilities)
+                opera_options.add_argument("--disable-notifications")
+                opera_options.add_argument("--headless")
+                opera_options.add_argument("--aggressive-cache-discard")
+                logging.info("Initializing Opera")
+                System.setProperty("webdriver.opera.driver",chrome_options=opera_options,desired_capabilities=capabilities);
+
+                # System.setProperty("webdriver.chrome.driver", "C:/Users/user/Downloads/operadriver-0.1.0-win32/operadriver-0.1.0-win32.exe");
+                # c
                 # self.driver = webdriver.Chrome('./chromedriver',chrome_options=chrome_options)
 
                 # logging.info("Initializing Safari")
