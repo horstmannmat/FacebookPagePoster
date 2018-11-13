@@ -66,11 +66,7 @@ class Spotted_Poster(object):
             text_box = open_text_area()
             text_box.clear()
             text_box.send_keys(' ')
-            # for i in range(len(spotted_message)):
-            #     if i < len(spotted_message):
-            #         if (spotted_message[i] == '#') and (spotted_message[i+1].isalpha()):
-            #             spotted_message_tmp = "  ".join(spotted_message[i+1:].split(' ',1))
-            #             spotted_message = spotted_message[:i+1] + 'X' + spotted_message_tmp
+            
 
             logging.info(spotted_message)
 
@@ -220,7 +216,22 @@ class Spotted_Poster(object):
         logging.info("Google setup finished")
 
 
-    def download_spreedsheet(self):
+    def download_posts(self):
+
+        def seek_differences():
+            with open('spottedOld.tsv', 'r', encoding='utf-8') as fold, \
+                open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
+                open('spottedDiff.tsv', 'wb') as fdiff:
+                    diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
+                    lines = list(diff)[2:]
+                    added = [line[1:] for line in lines if line[0] == '+']
+                    for line in added:
+                        fdiff.write(line.encode('utf-8',errors='strict'))
+                    if len(added):
+                        logging.info("Created the diff file...")
+                    return len(added)
+
+
         f = open('sensitive_spreadSheet_data.txt', 'r')
         file_id= f.readline().rstrip()
         f.close()
@@ -234,22 +245,16 @@ class Spotted_Poster(object):
         #write the new file
         with open("spottedNew.tsv","wb") as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
-            f.write(wrapper.encode('utf-8',errors='strict'))
+            lines = io.StringIO(wrapper).readlines()
+            for line in lines:
+                if (line.split("\t")[1] !=  '' ):
+                    f.write(line.encode('utf-8',errors='strict'))
+
             f.write('\n'.encode('utf-8',errors='strict'))
-        self.seek_differences()
+
+        return seek_differences()
 
 
-    def seek_differences(self):
-        with open('spottedOld.tsv', 'r', encoding='utf-8') as fold, \
-                open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
-                open('spottedDiff.tsv', 'wb') as fdiff:
-            diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
-            lines = list(diff)[2:]
-            added = [line[1:] for line in lines if line[0] == '+']
-            for line in added:
-                fdiff.write(line.encode('utf-8',errors='strict'))
-
-            logging.info("Created the diff file...")
 
 
     def post_spotteds(self):
@@ -274,12 +279,13 @@ class Spotted_Poster(object):
         self.page_url = 'https://m.facebook.com/SpottedUFPR3.0/'
 
         self.setup_google_api()
-        self.download_spreedsheet()
-        self.firing_up_driver()
-        self.sign_in()
-        self.post_spotteds()
+        lines_number = self.download_posts()
 
-        self.close()
+        if (lines_number):
+            self.firing_up_driver()
+            self.sign_in()
+            self.post_spotteds()
+            self.close()
 
         logging.info("All poster were published ")
 
