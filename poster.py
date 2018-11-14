@@ -66,7 +66,7 @@ class Spotted_Poster(object):
             text_box = open_text_area()
             text_box.clear()
             text_box.send_keys(' ')
-            
+
 
             logging.info(spotted_message)
 
@@ -184,7 +184,7 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
-            time.sleep(5)
+            time.sleep(1)
             self.driver_open_url()
 
             try:
@@ -271,7 +271,7 @@ class Spotted_Poster(object):
 
             fOld.write('\n'.encode('utf-8',errors='strict'))
 
-            time.sleep(10)
+            time.sleep(5)
 
     def main(self):
 
