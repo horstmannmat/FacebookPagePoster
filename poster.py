@@ -184,7 +184,7 @@ class Spotted_Poster(object):
 
         while self.login is False:
             login_attempt()
-            time.sleep(1)
+            time.sleep(2)
             self.driver_open_url()
 
             try:
