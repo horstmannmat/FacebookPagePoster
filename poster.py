@@ -220,15 +220,24 @@ class Spotted_Poster(object):
     def download_posts(self):
 
         def seek_differences():
+
             with open('spottedOld.csv', 'r', encoding='utf-8') as fold, open('spottedNew.csv', 'r', encoding='utf-8') as fnew:
                 old_spotteds = fold.readlines()
                 new_spotteds = fnew.readlines()
             added = 0;
+
             with open('spottedDiff.csv', 'w',encoding='utf-8') as fdiff:
-                for line in new_spotteds:
-                    if line not in old_spotteds:
-                        fdiff.write(line)
+                line_in_new = 0
+                line_in_old = 0
+                while line_in_new < len(new_spotteds) :
+                    if old_spotteds[line_in_old] == new_spotteds[line_in_new]:
+                        if (line_in_old+1 < len(old_spotteds)):
+                            line_in_old += 1
+                    else:
+                        fdiff.write(new_spotteds[line_in_new])
                         added += 1
+
+                    line_in_new += 1
             if added:
                 logging.info("Created the diff file...")
             return added
@@ -248,7 +257,7 @@ class Spotted_Poster(object):
         with open("spottedNew.csv","w",encoding='utf-8') as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
             csv_file = csv.reader(io.StringIO(wrapper))
-            w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
             for row in csv_file:
                 if (row[1] !=  '' ):
                     w.writerow(row)
@@ -263,7 +272,7 @@ class Spotted_Poster(object):
         with open("spottedDiff.csv","r", encoding='utf-8') as fDiff, open("spottedOld.csv","a",encoding='utf-8') as fOld:
             spotteds = csv.reader(fDiff)
 
-            w = csv.writer(fOld, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            w = csv.writer(fOld, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
             for spotted in spotteds:
                 message = ' '.join([spotted[1],spotted[2],spotted[3]])
                 time.sleep(1)

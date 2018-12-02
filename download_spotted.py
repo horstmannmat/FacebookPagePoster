@@ -35,10 +35,10 @@ file_id= f.readline().rstrip()
 f.close()
 
 #Create file if not exist
-if os.path.exists("spottedOld.tsv"):
+if os.path.exists("spottedOld.csv"):
     pass
 else:
-    open("spottedOld.tsv","w").close()
+    open("spottedOld.csv","w").close()
 
 # Setup the Drive v3 API
 store = file.Storage('credentials.json')
@@ -63,7 +63,7 @@ print("Finished download")
 with open("spottedOld.csv","w",encoding='utf-8') as f:
     wrapper = str(fh.getvalue().decode("utf-8"))
     csv_file = csv.reader(io.StringIO(wrapper))
-    w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
     for row in csv_file:
         if (row[1] !=  '' ):
             w.writerow(row)
