@@ -17,7 +17,6 @@
 
 from __future__ import absolute_import, print_function
 import io
-import difflib
 from apiclient.http import MediaIoBaseDownload
 from apiclient.discovery import build
 from httplib2 import Http
@@ -298,6 +297,8 @@ class Spotted_Poster(object):
                 else:
                     self.close()
                     logging.info("All poster were published ")
+        else:
+            logging.info("Nothing to publish")
 
 
 
