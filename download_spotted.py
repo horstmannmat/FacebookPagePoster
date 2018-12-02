@@ -60,7 +60,7 @@ while done is False:
 print("Finished download")
 
 #write the new file
-with open("spottedOld.csv","w") as f:
+with open("spottedOld.csv","w",encoding='utf-8') as f:
     wrapper = str(fh.getvalue().decode("utf-8"))
     csv_file = csv.reader(io.StringIO(wrapper))
     w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

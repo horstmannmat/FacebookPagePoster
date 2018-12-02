@@ -224,7 +224,7 @@ class Spotted_Poster(object):
                 old_spotteds = fold.readlines()
                 new_spotteds = fnew.readlines()
             added = 0;
-            with open('spottedDiff.csv', 'w') as fdiff:
+            with open('spottedDiff.csv', 'w',encoding='utf-8') as fdiff:
                 for line in new_spotteds:
                     if line not in old_spotteds:
                         fdiff.write(line)
@@ -245,7 +245,7 @@ class Spotted_Poster(object):
             status, done = downloader.next_chunk()
         logging.info("Download finished")
         #write the new file
-        with open("spottedNew.csv","w") as f:
+        with open("spottedNew.csv","w",encoding='utf-8') as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
             csv_file = csv.reader(io.StringIO(wrapper))
             w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -260,7 +260,7 @@ class Spotted_Poster(object):
 
 
     def post_spotteds(self):
-        with open("spottedDiff.tsv","r", encoding='utf-8') as fDiff, open("spottedOld.csv","a") as fOld:
+        with open("spottedDiff.csv","r", encoding='utf-8') as fDiff, open("spottedOld.csv","a",encoding='utf-8') as fOld:
             spotteds = csv.reader(fDiff)
 
             w = csv.writer(fOld, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
