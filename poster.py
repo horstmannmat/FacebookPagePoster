@@ -35,7 +35,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome import service
+from selenium.webdriver.common import desired_capabilities
+from selenium.webdriver.opera import options
 
 
 logging.basicConfig(level=logging.INFO,
@@ -128,30 +129,22 @@ class Spotted_Poster(object):
             #
             #
             #     self.driver = webdriver.Firefox(profile,options=options)
-                logging.info("Initializing Opera")
 
-                webdriver_service = service.Service("C:\Program Files (x86)\Opera Drive\operadriver.exe")
-                webdriver_service.start()
 
-                capabilities = { 'operaOptions': { 'debuggerAddress': "localhost:1212" }}
-                opera_options = webdriver.ChromeOptions()
 
-                self.driver = webdriver.Remote(webdriver_service.service_url, capabilities)
+                operaDriverLoc = os.path.abspath('C:\\Program Files (x86)\\Opera Drive\operadriver.exe')  # Replace this path with the actual path on your machine.
+                operaExeLoc = os.path.abspath('C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\57.0.3098.76\\opera.exe')   # Replace this path with the actual path on your machine.
+
+                remoteExecutor = 'http://127.0.0.1:9515'
+                operaCaps = desired_capabilities.DesiredCapabilities.OPERA.copy()
+
+                opera_options = options.ChromeOptions()
+                opera_options._binary_location = operaExeLoc
                 opera_options.add_argument("--disable-notifications")
                 opera_options.add_argument("--headless")
                 opera_options.add_argument("--aggressive-cache-discard")
                 logging.info("Initializing Opera")
-                System.setProperty("webdriver.opera.driver",chrome_options=opera_options,desired_capabilities=capabilities);
-
-                # System.setProperty("webdriver.chrome.driver", "C:/Users/user/Downloads/operadriver-0.1.0-win32/operadriver-0.1.0-win32.exe");
-                # c
-                # self.driver = webdriver.Chrome('./chromedriver',chrome_options=chrome_options)
-
-                # logging.info("Initializing Safari")
-                # os.environ["SELENIUM_SERVER_JAR"] = "selenium-server-standalone-2.41.0.jar"
-                # self.driver = webdriver.Safari()
-
-                # self.driver.implicitly_wait(3)
+                self.driver = webdriver.Chrome(executable_path = operaDriverLoc, options = opera_options, desired_capabilities = operaCaps)
             except Exception as error:
                 logging.error("Can't initialize Firefox")
                 logging.error(type(error))    # the exception instance
