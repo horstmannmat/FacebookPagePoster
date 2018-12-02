@@ -6,5 +6,5 @@
 facebook_credentials.txt
 sensitive_spreadSheet_data.txt
 geckodriver.log
-*.tsv
+*.csv
 *.bak

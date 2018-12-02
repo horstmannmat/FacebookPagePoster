@@ -27,6 +27,8 @@ import time
 import os
 from sys import platform
 import signal
+import csv
+import atexit
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -219,23 +221,24 @@ class Spotted_Poster(object):
     def download_posts(self):
 
         def seek_differences():
-            with open('spottedOld.tsv', 'r', encoding='utf-8') as fold, \
-                open('spottedNew.tsv', 'r', encoding='utf-8') as fnew,\
-                open('spottedDiff.tsv', 'wb') as fdiff:
-                    diff = difflib.unified_diff(fold.readlines(),fnew.readlines(),fromfile='fold',tofile='fnew',lineterm='\n', n=0)
-                    lines = list(diff)[2:]
-                    added = [line[1:] for line in lines if line[0] == '+']
-                    for line in added:
-                        fdiff.write(line.encode('utf-8',errors='strict'))
-                    if len(added):
-                        logging.info("Created the diff file...")
-                    return len(added)
+            with open('spottedOld.csv', 'r', encoding='utf-8') as fold, open('spottedNew.csv', 'r', encoding='utf-8') as fnew:
+                old_spotteds = fold.readlines()
+                new_spotteds = fnew.readlines()
+            added = 0;
+            with open('spottedDiff.csv', 'w') as fdiff:
+                for line in new_spotteds:
+                    if line not in old_spotteds:
+                        fdiff.write(line)
+                        added += 1
+            if added:
+                logging.info("Created the diff file...")
+            return added
 
 
         f = open('sensitive_spreadSheet_data.txt', 'r')
         file_id= f.readline().rstrip()
         f.close()
-        request = self.drive_service.files().export_media(fileId=file_id,mimeType='text/tab-separated-values')
+        request = self.drive_service.files().export_media(fileId=file_id,mimeType='text/csv')
         fh = io.BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
         done = False
@@ -243,14 +246,14 @@ class Spotted_Poster(object):
             status, done = downloader.next_chunk()
         logging.info("Download finished")
         #write the new file
-        with open("spottedNew.tsv","wb") as f:
+        with open("spottedNew.csv","w") as f:
             wrapper = str(fh.getvalue().decode("utf-8"))
-            lines = io.StringIO(wrapper).readlines()
-            for line in lines:
-                if (line.split("\t")[1] !=  '' ):
-                    f.write(line.encode('utf-8',errors='strict'))
+            csv_file = csv.reader(io.StringIO(wrapper))
+            w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            for row in csv_file:
+                if (row[1] !=  '' ):
+                    w.writerow(row)
 
-            f.write('\n'.encode('utf-8',errors='strict'))
 
         return seek_differences()
 
@@ -258,18 +261,15 @@ class Spotted_Poster(object):
 
 
     def post_spotteds(self):
-        with open("spottedDiff.tsv","r", encoding='utf-8') as fDiff, open("spottedOld.tsv","ab") as fOld:
-            spotteds = fDiff.readlines()
+        with open("spottedDiff.tsv","r", encoding='utf-8') as fDiff, open("spottedOld.csv","a") as fOld:
+            spotteds = csv.reader(fDiff)
 
-
+            w = csv.writer(fOld, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for spotted in spotteds:
-                message = ' '.join([spotted.split("\t")[1],spotted.split("\t")[2],spotted.split("\t")[3]])
+                message = ' '.join([spotted[1],spotted[2],spotted[3]])
                 time.sleep(1)
                 self.facebook_post(message)
-
-                fOld.write(spotted.encode('utf-8',errors='strict'))
-
-            fOld.write('\n'.encode('utf-8',errors='strict'))
+                w.writerow(spotted)
 
             time.sleep(5)
 
@@ -282,12 +282,25 @@ class Spotted_Poster(object):
         lines_number = self.download_posts()
 
         if (lines_number):
-            self.firing_up_driver()
-            self.sign_in()
-            self.post_spotteds()
-            self.close()
 
-        logging.info("All poster were published ")
+            self.firing_up_driver()
+            try:
+                self.sign_in()
+            except Exception as e:
+                logging.error(e)
+                self.close()
+            else:
+                try:
+                    self.post_spotteds()
+                except Exception as e:
+                    logging.error(e)
+                    self.close()
+                else:
+                    self.close()
+                    logging.info("All poster were published ")
+
+
+
 
 
 def main():

@@ -28,7 +28,7 @@ from apiclient.http import MediaIoBaseDownload
 from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
-
+import csv
 
 f = open('sensitive_spreadSheet_data.txt', 'r')
 file_id= f.readline().rstrip()
@@ -50,7 +50,7 @@ if not creds or creds.invalid:
 drive_service = build('drive', 'v3', http=creds.authorize(Http()))
 
 # Download spreadSheet from google
-request = drive_service.files().export_media(fileId=file_id,mimeType='text/tab-separated-values')
+request = drive_service.files().export_media(fileId=file_id,mimeType='text/csv')
 fh = io.BytesIO()
 downloader = MediaIoBaseDownload(fh, request)
 done = False
@@ -60,15 +60,16 @@ while done is False:
 print("Finished download")
 
 #write the new file
-with open("spottedOld.tsv","wb") as f:
+with open("spottedOld.csv","w") as f:
     wrapper = str(fh.getvalue().decode("utf-8"))
-    lines = io.StringIO(wrapper).readlines()
-    for line in lines:
-        if (line.split("\t")[1] !=  '' ):
-            f.write(line.encode('utf-8',errors='strict'))
+    csv_file = csv.reader(io.StringIO(wrapper))
+    w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for row in csv_file:
+        if (row[1] !=  '' ):
+            w.writerow(row)
 
-    f.write('\n'.encode('utf-8',errors='strict'))
+    # f.write('\n'.encode('utf-8',errors='strict'))
 
 
-open("spottedDiff.tsv", "w").close()
-open("spottedNew.tsv", "w").close()
+open("spottedDiff.csv", "w").close()
+open("spottedNew.csv", "w").close()
