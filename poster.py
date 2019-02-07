@@ -265,6 +265,41 @@ class Spotted_Poster(object):
 
         return seek_differences()
 
+    def restart_posts(self):
+        f = open('sensitive_spreadSheet_data.txt', 'r')
+        file_id= f.readline().rstrip()
+        f.close()
+
+        #Create file if not exist
+        if os.path.exists("spottedOld.csv"):
+            pass
+        else:
+            open("spottedOld.csv","w").close()
+        # Download spreadSheet from google
+        request = self.drive_service.files().export_media(fileId=file_id,mimeType='text/csv')
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        logging.info("Finished download")
+
+        #write the new file
+        with open("spottedOld.csv","w",encoding='utf-8') as f:
+            wrapper = str(fh.getvalue().decode("utf-8"))
+            csv_file = csv.reader(io.StringIO(wrapper))
+            w = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+            for row in csv_file:
+                if (row[1] !=  '' ):
+                    w.writerow(row)
+
+            # f.write('\n'.encode('utf-8',errors='strict'))
+
+
+        open("spottedDiff.csv", "w").close()
+        open("spottedNew.csv", "w").close()
+
 
 
 
@@ -287,28 +322,29 @@ class Spotted_Poster(object):
         self.page_url = 'https://m.facebook.com/SpottedUFPR3.0/'
 
         self.setup_google_api()
-        lines_number = self.download_posts()
-
-        if (lines_number):
-
-            self.firing_up_driver()
-            try:
-                self.sign_in()
-            except Exception as e:
-                logging.error(e)
-                self.close()
-            else:
-                try:
-                    self.post_spotteds()
-                except Exception as e:
-                    logging.error(e)
-                    self.close()
-                else:
-                    self.close()
-                    logging.info("All poster were published ")
-        else:
-            logging.info("Nothing to publish")
-
+        self.restart_posts()
+        # lines_number = self.download_posts()
+        #
+        # if (lines_number):
+        #
+        #     self.firing_up_driver()
+        #     try:
+        #         self.sign_in()
+        #     except Exception as e:
+        #         logging.error(e)
+        #         self.close()
+        #     else:
+        #         try:
+        #             self.post_spotteds()
+        #         except Exception as e:
+        #             logging.error(e)
+        #             self.close()
+        #         else:
+        #             self.close()
+        #             logging.info("All poster were published ")
+        # else:
+        #     logging.info("Nothing to publish")
+        #
 
 
 
