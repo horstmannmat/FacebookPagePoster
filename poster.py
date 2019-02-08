@@ -61,8 +61,10 @@ class FacebookPagePoster(object):
             delete()
         except:
             logging.info("Post not Found")
+            return None
         else:
             logging.info("Post Deleted")
+            return True
 
 
 
