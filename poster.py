@@ -1,5 +1,5 @@
 # FacebookPagePoster
-# This file is part of the spottedPoster distribution (https://github.com/horstmannmat/spottedPoster).
+# This file is part of the FacebookPagePoster distribution (https://github.com/horstmannmat/FacebookPagePoster).
 # Copyright (C) 2018 Matheus Horstmann
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import re
 import config
 
 
@@ -44,15 +45,35 @@ class FacebookPagePoster(object):
         self.login = False
         self.drive_service = None
         self.page_url = None
+        self.page_id = None
 
 
-    def facebook_post(self, message):
+    def delete(self, story_fbid):
+        def delete():
+            self.driver.get('https://m.facebook.com/story.php?story_fbid='+story_fbid+'&id='+self.page_id)
+            delete_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[1]/div[1]/div/div[1]/div[1]/table/tbody/tr/td[2]/div/div/a[2]')
+            delete_button.click()
+            confirm_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div[2]/div[1]/form/input[3]')
+            confirm_button.click()
+
+        try:
+            logging.info("Deleting Post")
+            delete()
+        except:
+            logging.info("Post not Found")
+        else:
+            logging.info("Post Deleted")
+
+
+
+    def post(self, message):
 
         def open_text_area():
-            self.driver.execute_script("window.scrollTo(0, 0);")
-            self.driver.execute_script("window.scrollTo(0, 100);")
-            text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "xc_message")))
-            # text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "PageComposerPagelet_")))
+            # self.driver.execute_script("window.scrollTo(0, 0);")
+            # self.driver.execute_script("window.scrollTo(0, 100);")
+            # text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "xc_message")))
+
+            text_area = self.driver.find_element(By.XPATH,'//*[@id="u_0_0"]')
             text_area.click()
             return self.driver.switch_to.active_element
 
@@ -64,18 +85,12 @@ class FacebookPagePoster(object):
 
             logging.info(message)
 
-            text_box.send_keys(message)
-            post_button = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "view_post")))
-            post_button.click()
-            # time.sleep(4)
+            # post_button = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "view_post")))
 
-            # if platform == "linux" or platform == "linux2" or platform == "win32" or platform == "win64":
-            # # linux or windows
-            #     text_box.send_keys(Keys.CONTROL,Keys.RETURN)
-            #
-            # elif platform == "darwin":
-            # # OS X
-            #     text_box.send_keys(Keys.COMMAND,Keys.RETURN)
+            text_box.send_keys(message)
+            post_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[1]/div/div[3]/div/div[4]/form/table/tbody/tr/td[3]/div/input')
+            post_button.click()
+
 
         post_message(message)
     def sending_login_details(self):
@@ -95,8 +110,8 @@ class FacebookPagePoster(object):
         send_password()
 
     def get_if_loggin_successful(self):
-        
-        return WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.ID, "pagelet_composer")))
+        one_tap = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div/table/tbody/tr/td/div/h3')))
+        return one_tap.text == "Log In With One Tap" or WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[1]/div/form/table/tbody/tr/td[2]/input')))
 
     def getting_login_details(self):
 
@@ -112,7 +127,6 @@ class FacebookPagePoster(object):
             self.password = password
 
 
-        f = open('facebook_credentials.txt', 'r')
         user_email= config.EMAIL
         user_password= config.PASSWORD
 
@@ -166,6 +180,13 @@ class FacebookPagePoster(object):
         def go_to_page():
             self.driver.get(self.page_url)
 
+        def get_page_id():
+            img = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[1]/div/div[3]/div/div[1]/div/div[1]/div/a')
+            img_url = img.get_attribute('href')
+            regex = r"https:\/\/.*profile_id="
+            page_id = re.sub(regex, "", img_url)
+            self.page_id = page_id
+
         def login_attempt():
             self.getting_login_details()
             logging.info("Logging in...")
@@ -173,8 +194,6 @@ class FacebookPagePoster(object):
 
         while self.login is False:
             login_attempt()
-            time.sleep(2)
-            self.driver_open_url()
 
             try:
                 self.get_if_loggin_successful()
@@ -184,6 +203,7 @@ class FacebookPagePoster(object):
                 self.login = True
                 logging.info("Login Successful!")
                 go_to_page()
+                get_page_id()
 
 
 
@@ -191,8 +211,29 @@ class FacebookPagePoster(object):
 
 
 def main():
-    app = Spotted_Poster()
-    app.main()
+
+    print("TESTING")
+    # app = FacebookPagePoster()
+    # app.page_url = 'https://m.facebook.com/SpottedUFPR3.0/'
+    #
+    # app.firing_up_driver()
+    # try:
+    #     app.sign_in()
+    # except Exception as e:
+    #     logging.error(e)
+    #     app.close()
+    # else:
+    #     try:
+    #         app.delete_post('696653024064704')
+    #     except Exception as e:
+    #         logging.error(e)
+    #         app.close()
+    #     else:
+    #         app.close()
+    #         logging.info("All poster were published ")
+
+
+
 
 if __name__ == '__main__':
     main()
