@@ -105,7 +105,7 @@ venv.bak/
 
 # SPOTTED
 *.json
-*crendentials*
+*credentials*
 *.jar
 *sensitive*
 .DS_store
