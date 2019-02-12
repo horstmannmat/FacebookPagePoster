@@ -3,15 +3,7 @@ Since Facebook blocked the apps to post on page, read more [here](https://develo
 I need to use Selenium
 ## Linux
 ### Prerequisites
-```
-sudo apt update
-sudo apt install python
-sudo apt install python-pip
-pip install --user requests
-pip install --user selenium
-pip install --user oauth2client
-pip install --user --upgrade google-api-python-client
-```
+
 * Gecko Driver for Firefox
 Download the selenium Driver for firefox [here](https://github.com/mozilla/geckodriver/releases).
 
