@@ -125,8 +125,8 @@ class FacebookPagePoster(object):
             self.password = password
 
 
-        user_email= config.EMAIL
-        user_password= config.PASSWORD
+        user_email= self.email or config.EMAIL
+        user_password= self.password or config.PASSWORD
 
         ask_email()
         ask_password()
@@ -173,6 +173,14 @@ class FacebookPagePoster(object):
     def close(self):
         logging.info("Closing Firefox")
         self.driver.quit()
+
+    def setup(self, page_id, email, password):
+        self.page_url = 'https://m.facebook.com/' + page_id + '/'
+        self.firing_up_driver()
+        self.sign_in()
+        self.email = email
+        self.password = password
+
 
     def sign_in(self):
         def go_to_page():
