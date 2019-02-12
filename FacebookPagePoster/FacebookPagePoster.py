@@ -71,9 +71,6 @@ class FacebookPagePoster(object):
     def post(self, message):
 
         def open_text_area():
-            # self.driver.execute_script("window.scrollTo(0, 0);")
-            # self.driver.execute_script("window.scrollTo(0, 100);")
-            # text_area = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "xc_message")))
 
             text_area = self.driver.find_element(By.XPATH,'//*[@id="u_0_0"]')
             text_area.click()
@@ -87,7 +84,6 @@ class FacebookPagePoster(object):
 
             logging.info(message)
 
-            # post_button = WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.NAME, "view_post")))
 
             text_box.send_keys(message)
             post_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[1]/div/div[3]/div/div[4]/form/table/tbody/tr/td[3]/div/input')
@@ -206,36 +202,3 @@ class FacebookPagePoster(object):
                 logging.info("Login Successful!")
                 go_to_page()
                 get_page_id()
-
-
-
-
-
-
-def main():
-
-    print("TESTING")
-    # app = FacebookPagePoster()
-    # app.page_url = 'https://m.facebook.com/SpottedUFPR3.0/'
-    #
-    # app.firing_up_driver()
-    # try:
-    #     app.sign_in()
-    # except Exception as e:
-    #     logging.error(e)
-    #     app.close()
-    # else:
-    #     try:
-    #         app.delete_post('696653024064704')
-    #     except Exception as e:
-    #         logging.error(e)
-    #         app.close()
-    #     else:
-    #         app.close()
-    #         logging.info("All poster were published ")
-
-
-
-
-if __name__ == '__main__':
-    main()
