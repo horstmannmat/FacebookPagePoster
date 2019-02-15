@@ -67,6 +67,36 @@ class FacebookPagePoster(object):
             return True
 
 
+    def post_image(self, message, image_path, filter = None):
+        def send_image():
+            image_area = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[1]/div/div[3]/div/div[4]/form/div/span/div[1]/table/tbody/tr/td[2]/input')
+            image_area.click()
+            upload_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[1]/div/input[1]')
+            upload_button.send_keys(image_path)
+            if filter == "Enhance":
+                x_path = '/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[3]/div/fieldset/label[1]/div/table/tbody/tr/td[1]/input'
+            elif filter == "B&W":
+                x_path = '/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[3]/div/fieldset/label[2]/div/table/tbody/tr/td[1]/input'
+            elif filter == "Retro":
+                x_path = '/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[3]/div/fieldset/label[3]/div/table/tbody/tr/td[1]/input'
+            else:
+                x_path = '/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[3]/div/fieldset/label[4]/div/table/tbody/tr/td[1]/input'
+
+            self.driver.find_element(By.XPATH,x_path).click()
+            time.sleep(100)
+
+            self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/form/div[3]/input[1]').click()
+
+        def send_message():
+            text_box = self.driver.find_element(By.XPATH,'//*[@id="u_0_0"]')
+            text_box.click()
+            text_box.clear()
+            text_box.send_keys(message)
+            post_button = self.driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/table/tbody/tr/td/div/form/input[20]')
+            post_button.click()
+
+        send_image()
+        send_message()
 
     def post(self, message):
 

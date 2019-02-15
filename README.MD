@@ -1,4 +1,4 @@
-# Spotted Poster
+# Facebook Page Poster
 Since Facebook blocked the apps to post on page, read more [here](https://developers.facebook.com/docs/pages/).
 I need to use Selenium
 ## Linux

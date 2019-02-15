@@ -115,3 +115,5 @@ geckodriver.log
 sensitive_bot_data.txt
 *.csv
 *.bak
+local_test.py
+lena.jpg
