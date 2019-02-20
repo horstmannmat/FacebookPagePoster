@@ -34,6 +34,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
+logger = logging.getLogger(__name__)
 
 
 class FacebookPagePoster(object):
@@ -57,13 +58,13 @@ class FacebookPagePoster(object):
             confirm_button.click()
 
         try:
-            logging.info("Deleting Post")
+            logger.info("Deleting Post")
             delete()
         except:
-            logging.info("Post not Found")
+            logger.info("Post not Found")
             return None
         else:
-            logging.info("Post Deleted")
+            logger.info("Post Deleted")
             return True
 
 
@@ -112,7 +113,7 @@ class FacebookPagePoster(object):
             text_box.send_keys(' ')
 
 
-            logging.info(message)
+            logger.info(message)
 
 
             text_box.send_keys(message)
@@ -173,35 +174,35 @@ class FacebookPagePoster(object):
                 profile.set_preference("keep_alive",False)
                 options = webdriver.FirefoxOptions()
                 options.add_argument('-headless')
-                logging.info("Initializing Firefox")
+                logger.info("Initializing Firefox")
 
 
                 self.driver = webdriver.Firefox(profile,options=options)
 
-                # logging.info("Initializing Chrome")
+                # logger.info("Initializing Chrome")
                 # chrome_options = webdriver.ChromeOptions()
                 #
                 # chrome_options.add_argument("--disable-notifications")
                 # self.driver = webdriver.Chrome('./chromedriver',chrome_options=chrome_options)
 
-                # logging.info("Initializing Safari")
+                # logger.info("Initializing Safari")
                 # os.environ["SELENIUM_SERVER_JAR"] = "selenium-server-standalone-2.41.0.jar"
                 # self.driver = webdriver.Safari()
 
                 # self.driver.implicitly_wait(3)
             except Exception as error:
-                logging.error("Can't initialize Firefox")
-                logging.error(type(error))    # the exception instance
-                logging.error(error.args)     # arguments stored in .args
-                logging.error(error)
+                logger.error("Can't initialize Firefox")
+                logger.error(type(error))    # the exception instance
+                logger.error(error.args)     # arguments stored in .args
+                logger.error(error)
             else:
-                logging.info("Setup successful")
+                logger.info("Setup successful")
 
         initialize_driver()
         self.driver.get('https://m.facebook.com/login.php?login_attempt=1&lwv=110')
 
     def close(self):
-        logging.info("Closing Firefox")
+        logger.info("Closing Firefox")
         self.driver.quit()
 
     def setup(self, page_id, email, password):
@@ -225,7 +226,7 @@ class FacebookPagePoster(object):
 
         def login_attempt():
             self.getting_login_details()
-            logging.info("Logging in...")
+            logger.info("Logging in...")
             self.sending_login_details()
 
         while self.login is False:
@@ -234,9 +235,9 @@ class FacebookPagePoster(object):
             try:
                 self.get_if_loggin_successful()
             except:
-                logging.error("Wrong email or password?")
+                logger.error("Wrong email or password?")
             else:
                 self.login = True
-                logging.info("Login Successful!")
+                logger.info("Login Successful!")
                 go_to_page()
                 get_page_id()

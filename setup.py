@@ -5,7 +5,7 @@ with open("README.MD", "r") as fh:
 
 setuptools.setup(
     name="FacebookPagePoster",
-    version="0.1.2",
+    version="0.1.3",
     author="Matheus Horstmann",
     author_email="mch15@c3sl.ufpr.br",
     description="A bot to post of facebook pages",
