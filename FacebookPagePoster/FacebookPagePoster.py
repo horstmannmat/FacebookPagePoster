@@ -163,16 +163,12 @@ class FacebookPagePoster(object):
 
     def sending_login_details(self):
         def send_email():
-            em = self.driver.find_element(By.XPATH, '//*[@id="m_login_email"]')
+            em = self.driver.find_element(By.XPATH, '//input[@name="email"]')
             em.clear()
             em.send_keys(self.email)
 
         def send_password():
-            pwd = self.driver.find_element(
-                By.XPATH,
-                '/html/body/div[1]/div/div[2]/div/table/' +
-                'tbody/tr/td/div[2]/div[2]/form/ul/li[2]/div/input'
-            )
+            pwd = self.driver.find_element(By.XPATH,'//input[@name="pass"]')
             # pwd = self.driver.find_element_by_name("pass")
             pwd.clear()
             pwd.send_keys(self.password)
@@ -188,7 +184,7 @@ class FacebookPagePoster(object):
                 '/html/body/div[1]/div/div/div/table/tbody/tr/td/div/h3'
             ))
         )
-        return one_tap.text == "Log In With One Tap" or WebDriverWait(
+        return one_tap.text == "Log In With One Tap" or one_tap.text == "Entrar com um toque" or WebDriverWait(
                 self.driver,
                 20
                 ).until(
