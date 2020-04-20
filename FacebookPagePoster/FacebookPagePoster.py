@@ -163,12 +163,20 @@ class FacebookPagePoster(object):
 
     def sending_login_details(self):
         def send_email():
-            em = self.driver.find_element(By.XPATH, '//input[@name="email"]')
+            em = WebDriverWait(self.driver, 20).until(
+                EC.presence_of_element_located((
+                    By.XPATH,'//input[@name="email"]'
+                ))
+            )
             em.clear()
             em.send_keys(self.email)
 
         def send_password():
-            pwd = self.driver.find_element(By.XPATH,'//input[@name="pass"]')
+            pwd = WebDriverWait(self.driver, 20).until(
+                EC.presence_of_element_located((
+                    By.XPATH,'//input[@name="pass"]'
+                ))
+            )
             # pwd = self.driver.find_element_by_name("pass")
             pwd.clear()
             pwd.send_keys(self.password)
