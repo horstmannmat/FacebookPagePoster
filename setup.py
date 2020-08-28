@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="FacebookPagePoster",
-    version="0.1.7",
+    version="0.1.8",
     author="Matheus Horstmann",
     author_email="mch15@c3sl.ufpr.br",
     description="A bot to post of facebook pages",

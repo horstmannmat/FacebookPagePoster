@@ -59,7 +59,7 @@ class FacebookPagePoster(object):
             delete_button = self.driver.find_element(
                 By.XPATH,
                 '/html/body/div[1]/div/div[2]/div/div[1]/div[1]' +
-                '/div/div[1]/div[1]/table/tbody/tr/td[2]/div/div/a[2]'
+                '/div/div/header/table/tbody/tr/td[2]/header/div/a[2]'
             )
             delete_button.click()
             confirm_button = self.driver.find_element(
