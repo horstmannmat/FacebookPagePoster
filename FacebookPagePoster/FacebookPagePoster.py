@@ -51,7 +51,7 @@ class FacebookPagePoster(object):
     def delete(self, story_fbid):
         def delete():
             self.driver.get(
-                'https://m.facebook.com/story.php?story_fbid=' +
+                'https://mbasic.facebook.com/story.php?story_fbid=' +
                 story_fbid +
                 '&id=' +
                 self.page_id
@@ -267,14 +267,14 @@ class FacebookPagePoster(object):
 
         initialize_driver()
         self.driver.get(
-            'https://m.facebook.com/login.php?login_attempt=1&lwv=110')
+            'https://mbasic.facebook.com/login.php?login_attempt=1&lwv=110')
 
     def close(self):
         logger.info("Closing Firefox")
         self.driver.quit()
 
     def setup(self, page_id, email, password):
-        self.page_url = 'https://m.facebook.com/' + page_id + '/'
+        self.page_url = 'https://mbasic.facebook.com/' + page_id + '/'
         self.firing_up_driver()
         self.go_to_page()
         self.get_page_id()
